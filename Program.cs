@@ -1,4 +1,9 @@
-﻿using System;
+﻿/*
+ * Fábián Gábor
+ * CXNU8T
+ */
+
+using System;
 
 namespace ZH1 {
 	// 1. Készíts metódust, ami euró és ft között vált oda-vissza! Az első paraméterben legyen az átváltás iránya,
@@ -11,7 +16,7 @@ namespace ZH1 {
 
 		public double EurErteke { get; set; } = 300;
 
-		public void atvalt(Irany irany, int osszeg, out double eredmeny) {
+		public void Atvalt(Irany irany, int osszeg, out double eredmeny) {
 			eredmeny = 0;
 			switch (irany) {
 				case Irany.FtEur:
@@ -72,7 +77,7 @@ namespace ZH1 {
 	// Használd a függvényeket delegáltként!
 	internal class Delegalt {
 		public delegate int SzovegSzam(string s);
-		public static int nagybetuSzamol(string s) {
+		public static int NagybetuSzamol(string s) {
 			int n = 0;
 			foreach (char t in s) {
 				if (char.IsUpper(t)) n++;
@@ -80,7 +85,7 @@ namespace ZH1 {
 			return n;
 		}
 
-		public static int irasjelSzamol(string s) {
+		public static int IrasjelSzamol(string s) {
 			int n = 0;
 			foreach (char t in s) {
 				if (char.IsPunctuation(t)) n++;
@@ -93,9 +98,9 @@ namespace ZH1 {
 		public static void Main(string[] args) {
 			Valuta valuta = new Valuta {EurErteke = 333};
 			double eredmeny;
-			valuta.atvalt(Valuta.Irany.EurFt, 1000, out eredmeny);
+			valuta.Atvalt(Valuta.Irany.EurFt, 1000, out eredmeny);
 			Console.WriteLine(eredmeny);
-			valuta.atvalt(Valuta.Irany.FtEur, 1000, out eredmeny);
+			valuta.Atvalt(Valuta.Irany.FtEur, 1000, out eredmeny);
 			Console.WriteLine(eredmeny);
 
 			// 2. Az előző metódust felhasználva készíts programot, ami úgy vált át, hogy az átváltás irányát menüből
@@ -113,40 +118,39 @@ namespace ZH1 {
 					valasz = Convert.ToInt32(Console.ReadLine());
 					valasz--;
 				}
-				catch (Exception e) {
+				catch (Exception) {
 					Console.WriteLine("Szamot (1 vagy 2)!");
 				}
 			} while (valasz < 0 || valasz > 1);
 
 			int osszeg = 0;
-			bool osszegOK = false;
+			bool osszegOk = false;
 			do {
 				Console.Write("Osszeg: ");
 				try {
 					osszeg = Math.Abs(Convert.ToInt32(Console.ReadLine()));
-					osszegOK = true;
+					osszegOk = true;
 				}
-				catch (Exception e) {
+				catch (Exception) {
 					Console.WriteLine("Szamot!");
 				}
-			} while (!osszegOK);
+			} while (!osszegOk);
 
 			if (Enum.IsDefined(typeof(Valuta.Irany), valasz)) {
 				// kisse folosleges, mert do/while-ban ellenorizve van, hogy 0 vagy 1 legyen
-				valuta.atvalt((Valuta.Irany) valasz, osszeg, out eredmeny);
+				valuta.Atvalt((Valuta.Irany) valasz, osszeg, out eredmeny);
 				Console.WriteLine("Eredmeny: " + eredmeny);
 			}
 
 			Gyumolcs gyumolcs = new Gyumolcs("alma", Gyumolcs.Fajta.Magvas, 100);
 			Console.WriteLine(gyumolcs.ToString());
 
-			Delegalt delegalt = new Delegalt();
 			Delegalt.SzovegSzam szovegSzam;
 
-			szovegSzam = Delegalt.irasjelSzamol;
+			szovegSzam = Delegalt.IrasjelSzamol;
 			Console.WriteLine("Irasjel: " + szovegSzam("\"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...\""));
 			
-			szovegSzam = Delegalt.nagybetuSzamol;
+			szovegSzam = Delegalt.NagybetuSzamol;
 			Console.WriteLine("Nagybetu: " + szovegSzam("\"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...\""));
 		}
 	}
