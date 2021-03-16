@@ -9,20 +9,22 @@ namespace ZH1 {
 			EurFt
 		}
 
+		public double EurErteke { get; set; } = 300;
+
 		public void atvalt(Irany irany, int osszeg, out double eredmeny) {
-			double arany = 300.5;
 			eredmeny = 0;
 			switch (irany) {
 				case Irany.FtEur:
-					eredmeny = osszeg / arany; break;
+					eredmeny = osszeg / EurErteke; break;
 				case Irany.EurFt:
-					eredmeny = osszeg * arany; break;
+					eredmeny = osszeg * EurErteke; break;
 			}
 		}
 	}
 	internal class Program {
 		public static void Main(string[] args) {
 			Valuta valuta = new Valuta();
+			valuta.EurErteke = 333;
 			double eredmeny;
 			valuta.atvalt(Valuta.Irany.EurFt, 1000, out eredmeny);
 			Console.WriteLine(eredmeny);
