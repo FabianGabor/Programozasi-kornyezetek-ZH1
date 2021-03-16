@@ -23,13 +23,51 @@ namespace ZH1 {
 	}
 	internal class Program {
 		public static void Main(string[] args) {
-			Valuta valuta = new Valuta();
-			valuta.EurErteke = 333;
+			Valuta valuta = new Valuta {EurErteke = 333};
 			double eredmeny;
 			valuta.atvalt(Valuta.Irany.EurFt, 1000, out eredmeny);
 			Console.WriteLine(eredmeny);
 			valuta.atvalt(Valuta.Irany.FtEur, 1000, out eredmeny);
 			Console.WriteLine(eredmeny);
+			
+			// 2. Az előző metódust felhasználva készíts programot, ami úgy vált át, hogy az átváltás irányát menüből
+			// lehet kiválasztani! Az összeg legyen bekérhető! Nem-pozitív esetben számoljon abszolút értéket!
+			// Nem-szám bemenet esetében jelezze a hibát, majd ismételje meg a bekérést!
+			Console.WriteLine("Valassz valutavaltast: ");
+			foreach (Valuta.Irany i in (Valuta.Irany[]) Enum.GetValues(typeof(Valuta.Irany)))
+			{
+				Console.WriteLine(i.GetHashCode()+1 + "." + i);
+			}
+			
+			int valasz = 0;
+			do {
+				Console.Write("Valasz: ");
+				try {
+					valasz = Convert.ToInt32(Console.ReadLine());
+					valasz--;
+				}
+				catch (Exception e) {
+					Console.WriteLine("Szamot (1 vagy 2)!");
+				}
+			} while (valasz < 0 || valasz > 1);
+
+			int osszeg = 0;
+			bool osszegOK = false;
+			do {
+				Console.Write("Osszeg: ");
+				try {
+					osszeg = Math.Abs(Convert.ToInt32(Console.ReadLine()));
+					osszegOK = true;
+				}
+				catch (Exception e) {
+					Console.WriteLine("Szamot!");
+				}
+			} while (!osszegOK);
+			
+			if (Enum.IsDefined(typeof(Valuta.Irany), valasz)) {				// kisse folosleges, mert do/while-ban ellenorizve van, hogy 0 vagy 1 legyen
+				valuta.atvalt((Valuta.Irany) valasz, osszeg, out eredmeny);
+				Console.WriteLine("Eredmeny: " + eredmeny);
+			}
 		}
 	}
 }
