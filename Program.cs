@@ -21,6 +21,51 @@ namespace ZH1 {
 			}
 		}
 	}
+
+	// 3. Készíts struktúrát, ami egy gyümölcs adatait tárolja: név, fajta (felsorolás, többféle is lehet egyszerre:
+	// déligyümölcs, csonthéjas, magvas), egységár! Utóbbi csak tulajdonságként legyen elkészítve!
+	// Készítsünk default konstruktort és valamennyi adatával meghatározottat! Készítsünk ToString metódust!
+	internal class Gyumolcs {
+		private string _nev;
+
+		internal enum Fajta {
+			Déligyümölcs, 
+			Csonthéjas, 
+			Magvas
+		}
+
+		private Fajta _fajta;
+		private int _egysegar;
+
+		public Gyumolcs() {
+		}
+
+		public Gyumolcs(string nev, Fajta fajta, int egysegar) {
+			_nev = nev;
+			_fajta = fajta;
+			_egysegar = egysegar;
+		}
+
+		public string Nev {
+			get => _nev;
+			set => _nev = value;
+		}
+
+		public Fajta Faj {
+			get => _fajta;
+			set => _fajta = value;
+		}
+
+		public int Egysegar {
+			get => _egysegar;
+			set => _egysegar = value;
+		}
+
+		public override string ToString() {
+			return _nev + " " + _fajta + " " + _egysegar;
+		}
+	}
+	
 	internal class Program {
 		public static void Main(string[] args) {
 			Valuta valuta = new Valuta {EurErteke = 333};
@@ -68,6 +113,9 @@ namespace ZH1 {
 				valuta.atvalt((Valuta.Irany) valasz, osszeg, out eredmeny);
 				Console.WriteLine("Eredmeny: " + eredmeny);
 			}
+
+			Gyumolcs gyumolcs = new Gyumolcs("alma", Gyumolcs.Fajta.Magvas, 100);
+			Console.WriteLine(gyumolcs.ToString());
 		}
 	}
 }
