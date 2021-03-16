@@ -65,6 +65,29 @@ namespace ZH1 {
 			return _nev + " " + _fajta + " " + _egysegar;
 		}
 	}
+
+	// 4. Készíts delegáltat, ami egy bemenő szövegtömbből egész számot ad vissza!
+	// Készíts függvényt, ami visszaadja, hogy a paraméterben kapott szövegekben hány kezdődik nagybetűvel!
+	// Készíts függvényt, ami visszaadja, hogy a paraméterben kapott szövegekben hány írásjel szerepel összesen! (.?!)
+	// Használd a függvényeket delegáltként!
+	internal class Delegalt {
+		public delegate int SzovegSzam(string s);
+		public static int nagybetuSzamol(string s) {
+			int n = 0;
+			foreach (char t in s) {
+				if (char.IsUpper(t)) n++;
+			}
+			return n;
+		}
+
+		public static int irasjelSzamol(string s) {
+			int n = 0;
+			foreach (char t in s) {
+				if (char.IsPunctuation(t)) n++;
+			}
+			return n;
+		}
+	}
 	
 	internal class Program {
 		public static void Main(string[] args) {
@@ -74,16 +97,15 @@ namespace ZH1 {
 			Console.WriteLine(eredmeny);
 			valuta.atvalt(Valuta.Irany.FtEur, 1000, out eredmeny);
 			Console.WriteLine(eredmeny);
-			
+
 			// 2. Az előző metódust felhasználva készíts programot, ami úgy vált át, hogy az átváltás irányát menüből
 			// lehet kiválasztani! Az összeg legyen bekérhető! Nem-pozitív esetben számoljon abszolút értéket!
 			// Nem-szám bemenet esetében jelezze a hibát, majd ismételje meg a bekérést!
 			Console.WriteLine("Valassz valutavaltast: ");
-			foreach (Valuta.Irany i in (Valuta.Irany[]) Enum.GetValues(typeof(Valuta.Irany)))
-			{
-				Console.WriteLine(i.GetHashCode()+1 + "." + i);
+			foreach (Valuta.Irany i in (Valuta.Irany[]) Enum.GetValues(typeof(Valuta.Irany))) {
+				Console.WriteLine(i.GetHashCode() + 1 + "." + i);
 			}
-			
+
 			int valasz = 0;
 			do {
 				Console.Write("Valasz: ");
@@ -108,14 +130,24 @@ namespace ZH1 {
 					Console.WriteLine("Szamot!");
 				}
 			} while (!osszegOK);
-			
-			if (Enum.IsDefined(typeof(Valuta.Irany), valasz)) {				// kisse folosleges, mert do/while-ban ellenorizve van, hogy 0 vagy 1 legyen
+
+			if (Enum.IsDefined(typeof(Valuta.Irany), valasz)) {
+				// kisse folosleges, mert do/while-ban ellenorizve van, hogy 0 vagy 1 legyen
 				valuta.atvalt((Valuta.Irany) valasz, osszeg, out eredmeny);
 				Console.WriteLine("Eredmeny: " + eredmeny);
 			}
 
 			Gyumolcs gyumolcs = new Gyumolcs("alma", Gyumolcs.Fajta.Magvas, 100);
 			Console.WriteLine(gyumolcs.ToString());
+
+			Delegalt delegalt = new Delegalt();
+			Delegalt.SzovegSzam szovegSzam;
+
+			szovegSzam = Delegalt.irasjelSzamol;
+			Console.WriteLine("Irasjel: " + szovegSzam("\"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...\""));
+			
+			szovegSzam = Delegalt.nagybetuSzamol;
+			Console.WriteLine("Nagybetu: " + szovegSzam("\"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...\""));
 		}
 	}
 }
